@@ -94,7 +94,7 @@ gendata <- function(option){
     stop("Error: data option unsupported")
   }
   
-  XY <- XY[sample(nrow(XY)),]  # Shuffle data
+  # XY <- XY[sample(nrow(XY)),]  # Shuffle data
   X <- XY[,1:d]
   Y <- XY[,d+1]
   ndata <- length(Y)
