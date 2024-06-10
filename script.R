@@ -66,7 +66,8 @@ val1 <- val2 <- array(dim = c(nbRepet, nb.seq), data = NA)
 
 pb <- txtProgressBar(min = 0, max = nb.seq, style = 3)
 for(inb in 1:nb.seq){
-  for(irepet in 1:nbRepet){
+  # for(irepet in 1:nbRepet){  # TODO: Reverse this!
+  for(irepet in 1:1){
     ## Generate data
     if(irepet==1 || grepl("synthetic", data_option, fixed=TRUE)){
       # Only regenerate for synthetic data
@@ -87,18 +88,18 @@ for(inb in 1:nb.seq){
     Xtest <- Xfull[testIND,]
     Ytest <- Yfull[testIND]
 
-    print("Xtrain")
-    print(head(Xtrain, 3))
-    print(head(Ytrain, 3))
-    print("...")
-    print(tail(Xtrain, 3))
-    print(tail(Ytrain, 3))
-    print("Xtest")
-    print(head(Xtest, 3))
-    print(head(Ytest, 3))
-    print("...")
-    print(tail(Xtest, 3))
-    print(tail(Ytest, 3))
+    #print("Xtrain")
+    #print(head(Xtrain, 3))
+    #print(head(Ytrain, 3))
+    #print("...")
+    #print(tail(Xtrain, 3))
+    #print(tail(Ytrain, 3))
+    #print("Xtest")
+    #print(head(Xtest, 3))
+    #print(head(Ytest, 3))
+    #print("...")
+    #print(tail(Xtest, 3))
+    #print(tail(Ytest, 3))
     
     
     ntrain <- length(Ytrain)
@@ -126,23 +127,33 @@ for(inb in 1:nb.seq){
     sub1 = ERMs[,1]
     sub2 = ERMs[,2]
     full = ERMs[,3]
+    print("")
     print("Full model weights:")
     print(full)
     print("Sub model1 weights:")
     print(sub1)
     print("Sub model2 weights:")
     print(sub2)
+    print("")
 
     ## Loop over the grid of sigma2 and pick the best one for each method
     for(sigma2 in sigma2Grid){    
       ## Compute the shared empirical error
       theta_samplesTS <- get_sample(type = distribution, mean=ERMs[,3],variance2=sigma2, NMC)
+      theta_samplesTS <- array(1, dim=dim(theta_samplesTS))  # Fake samples
       Ln <- mean(loss(Ytrain,predictor(Xtrain,theta_samplesTS)))
       
       ## Our bound 
       tmpBProb <- mainBoundProba(NMC,sigma2)
+      print("")
       print("Bound")
       print(Ln + tmpBProb$val)
+      print("Vn")
+      print(tmpBProb$vnTerm)
+      print("Vn_prime")
+      print(tmpBProb$vnTermPrim)
+      print("COMPn")
+      print(tmpBProb$compTerm)
       if(Ln + tmpBProb$val < results[irepet,1,inb]){
         results[irepet,1,inb] <- Ln + tmpBProb$val
         Vn[irepet,inb] <- tmpBProb$vnTerm

@@ -22,7 +22,7 @@ get_sample <- function(type, mean, variance2, n_samples=1){
 }
 ## End of helper functions
 
-buildERMsequenceFast <- function(eps = 1e-16){
+buildERMsequenceFast <- function(eps = 1e-32){  # TODO: Increased precision
   ERMsequence <- matrix(nrow = d, ncol = 3, data = 0)
   for(ii in c(1,2,3))   ## change here for the fast version
   {
@@ -90,9 +90,23 @@ OptimEtaVnPrime <- function(NMC, vnTermPrim){
 
 VnTerm <- function(ERMfull,ERM1,ERM2,NMC,sigma2){
   theta_samples <- get_sample(type = distribution, mean=ERMfull, variance2=sigma2, n_samples=NMC)
-  print("theta_samples")
-  print(theta_samples)
+  theta_samples <- array(1, dim=dim(theta_samplesTS)) # Fake samples
+  # print("theta_samples")
+  # print(theta_samples)
   result  <- matrix(nrow = ntrain, ncol = NMC, data = NA)
+  print("ERM1:")
+  print(ERM1)
+  print("is evaluated on:")
+  print(head(Xtrain[1:(ntrain/2),], 2))
+  print("...")
+  print(tail(Xtrain[1:(ntrain/2),], 2))
+  print("")
+  print("ERM2:")
+  print(ERM2)
+  print("is evaluated on:")
+  print(head(Xtrain[(ntrain/2+1):ntrain,], 2))
+  print("...")
+  print(tail(Xtrain[(ntrain/2+1):ntrain,], 2))
   loss1 <- t(matrix(loss(Ytrain[1:(ntrain/2)],predictor(Xtrain[1:(ntrain/2),],ERM1)), nrow=NMC, ncol=ntrain/2, byrow=TRUE))
   loss2 <- t(matrix(loss(Ytrain[(ntrain/2+1):ntrain],predictor(Xtrain[(ntrain/2+1):ntrain,],ERM2)), nrow=NMC, ncol=ntrain/2, byrow=TRUE))
   
