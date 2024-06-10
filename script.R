@@ -19,7 +19,7 @@ par(mfrow=c(1,1))
 path <- "./"
 
 ## Experimental setup
-data_option = "adults"          # Options are: "sigmoid-synthetic", "haberman", "breast-cancer", 
+data_option = "haberman"          # Options are: "sigmoid-synthetic", "haberman", "breast-cancer", 
                                   # "tictactoe", "bank-notes", "kr-vs-kp", "spam", "mushroom", "adults"
 problem_type = "classification"   # No other problem type is supported currently  
 distribution <- "gaussian"        # No other distribution is supported currently 
@@ -86,7 +86,21 @@ for(inb in 1:nb.seq){
     Ytrain <- Yfull[-testIND]
     Xtest <- Xfull[testIND,]
     Ytest <- Yfull[testIND]
-  
+
+    print("Xtrain")
+    print(head(Xtrain, 3))
+    print(head(Ytrain, 3))
+    print("...")
+    print(tail(Xtrain, 3))
+    print(tail(Ytrain, 3))
+    print("Xtest")
+    print(head(Xtest, 3))
+    print(head(Ytest, 3))
+    print("...")
+    print(tail(Xtest, 3))
+    print(tail(Ytest, 3))
+    
+    
     ntrain <- length(Ytrain)
     if(irepet==1)
       print(c("Size of the training data=",ntrain))

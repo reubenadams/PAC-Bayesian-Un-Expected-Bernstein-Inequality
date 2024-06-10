@@ -98,7 +98,15 @@ gendata <- function(option){
   X <- XY[,1:d]
   Y <- XY[,d+1]
   ndata <- length(Y)
-  
+  print("Raw X")
+  print(head(X, 3))
+  print("...")
+  print(tail(X, 3))
+  print("Raw Y")
+  print(head(Y, 3))
+  print("...")
+  print(tail(Y, 3))
+
   ## Common pre-processing depending on the problem type
   # Make the problem 0-1
   Ymin <- min(Y)
@@ -116,6 +124,15 @@ gendata <- function(option){
       diff<-1
     X[,j] <- 2*(X[,j] - (Xmax[j]+Xmin[j])/2)/diff
   } 
+
+  print("Scaled X")
+  print(head(X, 3))
+  print("...")
+  print(tail(X, 3))
+  print("Zero-Oned Y")
+  print(head(Y, 3))
+  print("...")
+  print(tail(Y, 3))
   
   return(list("X"=X,"Y"=Y,"d"=d))
  }
