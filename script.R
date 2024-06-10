@@ -42,7 +42,7 @@ proportion <- 0.1
 ## Global constants
 rho <- 2            # This is for the grid-eta discretization
 delta <- 0.05       # The probability Threshold for the bound
-NMC <- 2          # how many Monte Carlo iterations for the Gaussian expectation?
+NMC <- 100          # how many Monte Carlo iterations for the Gaussian expectation?
 
 ## Definining the loss and the predictor type
 loss <- function(a,b) abs(a-b)
