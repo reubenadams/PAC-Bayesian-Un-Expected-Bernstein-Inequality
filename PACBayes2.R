@@ -90,6 +90,8 @@ OptimEtaVnPrime <- function(NMC, vnTermPrim){
 
 VnTerm <- function(ERMfull,ERM1,ERM2,NMC,sigma2){
   theta_samples <- get_sample(type = distribution, mean=ERMfull, variance2=sigma2, n_samples=NMC)
+  print("theta_samples")
+  print(theta_samples)
   result  <- matrix(nrow = ntrain, ncol = NMC, data = NA)
   loss1 <- t(matrix(loss(Ytrain[1:(ntrain/2)],predictor(Xtrain[1:(ntrain/2),],ERM1)), nrow=NMC, ncol=ntrain/2, byrow=TRUE))
   loss2 <- t(matrix(loss(Ytrain[(ntrain/2+1):ntrain],predictor(Xtrain[(ntrain/2+1):ntrain,],ERM2)), nrow=NMC, ncol=ntrain/2, byrow=TRUE))

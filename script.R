@@ -42,7 +42,7 @@ proportion <- 0.1
 ## Global constants
 rho <- 2            # This is for the grid-eta discretization
 delta <- 0.05       # The probability Threshold for the bound
-NMC <- 100          # how many Monte Carlo iterations for the Gaussian expectation?
+NMC <- 2          # how many Monte Carlo iterations for the Gaussian expectation?
 
 ## Definining the loss and the predictor type
 loss <- function(a,b) abs(a-b)
@@ -109,15 +109,29 @@ for(inb in 1:nb.seq){
     etaGrid <- numeric(etaGridSize)
     for(jj in 1:(etaGridSize))
       etaGrid[jj] <- 1/(b*rho^(jj)) 
+    print("G")
+    print(etaGrid)
+    
     
     # Build grid of posterior variance for the Gaussian-ERM distribution 
     sigma2GridSize <- ceil(log(ntrain)/log(2))
     sigma2Grid <- numeric(sigma2GridSize)
     for(jj in 1:sigma2GridSize)
       sigma2Grid[jj] <- 1/(2^(jj))
+    print("Vars")
+    print(sigma2Grid)
     
     ## Compute ERMs
     ERMs <- buildERMsequenceFast()
+    sub1 = ERMs[,1]
+    sub2 = ERMs[,2]
+    full = ERMs[,3]
+    print("Full model weights:")
+    print(full)
+    print("Sub model1 weights:")
+    print(sub1)
+    print("Sub model2 weights:")
+    print(sub2)
 
     ## Loop over the grid of sigma2 and pick the best one for each method
     for(sigma2 in sigma2Grid){    
@@ -127,6 +141,8 @@ for(inb in 1:nb.seq){
       
       ## Our bound 
       tmpBProb <- mainBoundProba(NMC,sigma2)
+      print("Bound")
+      print(Ln + tmpBProb$val)
       if(Ln + tmpBProb$val < results[irepet,1,inb]){
         results[irepet,1,inb] <- Ln + tmpBProb$val
         Vn[irepet,inb] <- tmpBProb$vnTerm
@@ -136,6 +152,7 @@ for(inb in 1:nb.seq){
         val2[irepet,inb] <- tmpBProb$val2
         bestSigma2[irepet,inb] <- sigma2
       }
+      
       
       ## TS bound
       ifelse(half,tmpBEB<- boundPBEB_half(NMC,sigma2),tmpBEB<-boundPBEB(NMC,sigma2))
