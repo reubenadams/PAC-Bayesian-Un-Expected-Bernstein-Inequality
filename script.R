@@ -66,8 +66,8 @@ val1 <- val2 <- array(dim = c(nbRepet, nb.seq), data = NA)
 
 pb <- txtProgressBar(min = 0, max = nb.seq, style = 3)
 for(inb in 1:nb.seq){
-  # for(irepet in 1:nbRepet){  # TODO: Reverse this!
-  for(irepet in 1:1){
+  for(irepet in 1:nbRepet){  # TODO: Reverse this!
+  # for(irepet in 1:1){
     ## Generate data
     if(irepet==1 || grepl("synthetic", data_option, fixed=TRUE)){
       # Only regenerate for synthetic data
